@@ -1,0 +1,114 @@
+.light-body{
+    /* background-color: #f3cd95; */
+    height: 80vh;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px grey;
+    display: flex;
+    position: relative;
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.dark-body{
+    background-color: #3d290a;
+    height: 80vh;
+    width: 100%;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgb(248, 247, 247);
+    display: flex;
+    padding-left: 10px;
+    margin-top: 10px;
+}
+
+.availOptns-light{
+    /* background-color: #23aad3; */
+    /* border: 1px solid #140101; */
+    height: 75vh;
+    width: 50%;
+    margin-top: 10px;
+}
+
+.availOptns-dark{
+    /* background-color: #c3d3d8; */
+    /* border: 1px solid #140101; */
+    height: 75vh;
+    width: 50%;
+    margin-top: 10px;
+
+}
+
+.recentUpdates-light{
+    background-color: #23aad3;
+    border: 1px solid #140101;
+    height: 75vh;
+    width: 50%;
+    margin-top: 10px;
+    margin-left: 10px;
+
+}
+
+.recentUpdates-dark{
+    background-color: #c3d3d8;
+    border: 1px solid #140101;
+    height: 75vh;
+    width: 50%;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.light-cards{
+    /* background-color: #f3cd95; */
+    height: 60vh;
+    width:35vw;
+    margin-left: 70px;
+    margin-top: 50px;
+}
+
+.dark-cards{
+    /* background-color: #98f395; */
+    height: 60vh;
+    width:35vw;
+    margin-left: 70px;
+    margin-top: 50px;
+}
+
+.card-light{
+    background-color: #f3cd95;
+    height: 13vh;
+    margin-top: 15px;
+    width: 35vw;
+    border: 1px solid #140101;
+    box-shadow: 0px 4px 6px grey;
+    display: flex;
+    color: red;
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 7px;
+    padding-left: 40px;
+    text-decoration:none;
+    border-radius: 10px;
+    font-size: 30px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
+
+.card-dark{
+   background-color: #0f0966;
+    height: 13vh;
+    margin-top: 15px;
+    width: 35vw;
+    border: 1px solid #140101;
+    box-shadow: 0px 4px 6px grey;
+    display: flex;
+    color: rgb(240, 228, 228);
+    font-weight: bold;
+    font-size: 20px;
+    text-align: center;
+    padding-top: 7px;
+    padding-left: 40px;
+    text-decoration:none;
+    border-radius: 10px;
+    font-size: 30px;
+    font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
+}
