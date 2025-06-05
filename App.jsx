@@ -9,8 +9,11 @@ import Homepage from './Components/Homepage'
 import "./Components/Homepage.css"
 import Checkup from './Components/Checkup'
 import AmbulanceBooking from './Components/AmbulanceBooking'
-import TipsandTricks from './Components/TipsandTricks'
+import TipsandTricks from './Components/Tipsandtricks'
 import AIQuiz from './Components/AIQuiz'
+import Articles from './Components/Articles'
+import YTRef from './Components/YTRef'
+import Influencers from './Components/Influencers'
 
 function App() {
   let [darkMode,setDarkMode] = useState(localStorage.getItem("darkMode") === "true"); //saves value even after reload
@@ -33,6 +36,9 @@ function App() {
       <Route path='/book-ambulance' element={<AmbulanceBooking darkMode={darkMode} changeTheme={changeTheme}/>}/>
       <Route path='/doctor-ai' element={<AIQuiz/>}/>
       <Route path='/emergency-tips' element={<TipsandTricks darkMode={darkMode} changeTheme={changeTheme}/>}/>
+      <Route path='/articles' element={<Articles darkMode={darkMode} changeTheme={changeTheme}/>}/>
+      <Route path='/yt-references' element={<YTRef darkMode={darkMode} changeTheme={changeTheme}/>}/>
+      <Route path='/influencers' element={<Influencers darkMode={darkMode} changeTheme={changeTheme}/>}/>
       </Routes>
     </BrowserRouter>
     </>
