@@ -87,6 +87,45 @@ To streamline the ambulance request process and provide appropriate help—gover
 
 ---
 
+## Steps for using the app
+1. Install
+   -Node.js from
+   -Android Studio from
+---
+2. In Android Studio open SDK Manager in Settings, select Show Packgages from bottom-right corner and check following boxes:
+   - In SDK Platforms:
+     - **Android 15 (VanillaIceCream)** in which check for 
+        **Android SDK Platform 35** and **Intel x86 Atom_64 System Image** or **Google APIs Intel x86 Atom System Image**
+   - In SDK Tools:
+       - **Android SDK Build Tools 34**
+       - **Android SDK Command-line Tools(latest)**
+       - **Android Emulator**
+       - **Android Emulator hypervisor driver(installer)**
+       - **Android SDK Platform Tools**
+       - **Google Play Licensing Libraries**
+         
+    If not installed check these boxes and install them.
+---
+3. Run the following command in command prompt(Run as Administrator)
+   ```bash
+   choco install -y nodejs-lts microsoft-openjdk17
+   ```
+---
+4. Run following commands in your directory
+   ```bash
+   npx @react-native-community/cli init ambulancetrackingsystem
+   ```
+---
+5. Open Android Studio and open Device Manager choose your connected device as device to be run in emulator.
+---
+6. Open this folder in VS Code and run following command in terminal for android devices else replace 'android' with 'ios'.
+   ```bash
+   npx react-native run-android
+   ```
+  This will install all required apps/folders for running this project on your device. Once completed will open your app in your device
+
+---
+
 ## 🚀 Future Improvements
 - Multi-language support
 - Emergency SOS button integration
