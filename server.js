@@ -1,38 +1,41 @@
-let express = require("express");
-let cors = require("cors");
-let { MongoClient, ObjectId } = require("mongodb");
-let multer = require("multer");
-let cloudinary = require("cloudinary").v2;
-let { CloudinaryStorage } = require("multer-storage-cloudinary");
+const express = require("express");
+const cors = require("cors");
+const { MongoClient } = require("mongodb");
+const multer = require("multer");
+const cloudinary = require("cloudinary").v2;
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
 
-let app = express();
+const app = express();
+
+// Middleware
 app.use(cors());
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // ✅ Needed for form fields
+app.use(express.urlencoded({ extended: true })); // Needed for form-data text fields
 
-const url = "mongodb://0.0.0.0:27017";
+// MongoDB connection (Change for production)
+const url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
 
-// Cloudinary config
+// Cloudinary config (use env variables on Render)
 cloudinary.config({
-  cloud_name: "dp5svqc1n",
-  api_key: "736295659442531",
-  api_secret: "jH-TRd5A65JCoTezD0L7gBfxHPE"
+  cloud_name: process.env.CLOUD_NAME || "dp5svqc1n",
+  api_key: process.env.CLOUD_KEY || "736295659442531",
+  api_secret: process.env.CLOUD_SECRET || "jH-TRd5A65JCoTezD0L7gBfxHPE",
 });
 
 // Multer storage for Cloudinary
-let storage = new CloudinaryStorage({
+const storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
     folder: "hospital_uploads",
     allowed_formats: ["jpg", "jpeg", "png"],
-    public_id: (req, file) => Date.now() + "-" + file.originalname
-  }
+    public_id: (req, file) => Date.now() + "-" + file.originalname,
+  },
 });
 
-let upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // Upload route
-app.post('/upload', upload.single("file"), async (req, res) => {
+app.post("/upload", upload.single("file"), async (req, res) => {
   try {
     console.log("REQ BODY:", req.body);
     console.log("REQ FILE:", req.file);
@@ -41,29 +44,34 @@ app.post('/upload', upload.single("file"), async (req, res) => {
       return res.status(400).json({ error: "No file uploaded" });
     }
 
-    let client = new MongoClient(url);
+    const client = new MongoClient(url);
     await client.connect();
-    let db = client.db("tinder");
-    let collec = db.collection("photos");
+    const db = client.db("tinder");
+    const collec = db.collection("photos");
 
-    let obj = {
+    const obj = {
       name: req.body.name,
       email: req.body.email,
       age: req.body.age,
       gender: req.body.gender,
       occupation: req.body.occupation,
       caption: req.body.caption,
-      file_url: req.file.path,
+      file_url: req.file.path, // Cloudinary file URL
       file_id: req.file.filename || req.file.public_id,
-      upload_time: new Date()
+      upload_time: new Date(),
     };
 
-    let result = await collec.insertOne(obj);
-    res.status(200).send(result);
+    const result = await collec.insertOne(obj);
+
+    await client.close();
+
+    res.status(200).json({ success: true, insertedId: result.insertedId });
   } catch (err) {
     console.error("UPLOAD ERROR:", err);
-    res.status(500).send({ error: "Upload failed" });
+    res.status(500).json({ error: "Upload failed", details: err.message });
   }
 });
 
-app.listen(3000, () => console.log("Express is Alive"));
+// For Render deployment
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
