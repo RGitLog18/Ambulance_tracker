@@ -13,7 +13,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true })); // Needed for form-data text fields
 
 // MongoDB connection (Change for production)
-const url = process.env.MONGO_URL || "mongodb://127.0.0.1:27017";
+const url = process.env.MONGO_URL || "mongodb+srv://rajeedandge444:PNzwy19r3iM1qEZ8@cluster0.mfaavun.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0";
 
 // Cloudinary config (use env variables on Render)
 cloudinary.config({
@@ -75,3 +75,5 @@ app.post("/upload", upload.single("file"), async (req, res) => {
 // For Render deployment
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
+
+// pswd:PNzwy19r3iM1qEZ8
