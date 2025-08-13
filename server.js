@@ -8,6 +8,7 @@ let { CloudinaryStorage } = require("multer-storage-cloudinary");
 let app = express();
 app.use(cors());
 app.use(express.json());
+app.use(express.urlencoded({ extended: true })); // ✅ Needed for form fields
 
 const url = "mongodb://0.0.0.0:27017";
 
@@ -22,7 +23,7 @@ cloudinary.config({
 let storage = new CloudinaryStorage({
   cloudinary: cloudinary,
   params: {
-    folder: "hospital_uploads", // Cloudinary folder
+    folder: "hospital_uploads",
     allowed_formats: ["jpg", "jpeg", "png"],
     public_id: (req, file) => Date.now() + "-" + file.originalname
   }
@@ -33,6 +34,13 @@ let upload = multer({ storage: storage });
 // Upload route
 app.post('/upload', upload.single("file"), async (req, res) => {
   try {
+    console.log("REQ BODY:", req.body);
+    console.log("REQ FILE:", req.file);
+
+    if (!req.file) {
+      return res.status(400).json({ error: "No file uploaded" });
+    }
+
     let client = new MongoClient(url);
     await client.connect();
     let db = client.db("tinder");
@@ -45,57 +53,16 @@ app.post('/upload', upload.single("file"), async (req, res) => {
       gender: req.body.gender,
       occupation: req.body.occupation,
       caption: req.body.caption,
-      file_url: req.file.path, // Cloudinary URL
-      file_id: req.file.filename || req.file.public_id, // Public ID for deletion
+      file_url: req.file.path,
+      file_id: req.file.filename || req.file.public_id,
       upload_time: new Date()
     };
 
     let result = await collec.insertOne(obj);
     res.status(200).send(result);
   } catch (err) {
-    console.error(err);
+    console.error("UPLOAD ERROR:", err);
     res.status(500).send({ error: "Upload failed" });
-  }
-});
-
-// Get all files
-app.get("/files", async (req, res) => {
-  try {
-    let client = new MongoClient(url);
-    await client.connect();
-    let db = client.db('tinder');
-    let collec = db.collection('photos');
-    let username = req.query.username;
-
-    let obj = username ? { username } : {};
-    let result = await collec.find(obj).toArray();
-    res.status(200).send(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: "Failed to fetch files" });
-  }
-});
-
-// Delete file
-app.delete("/delete/:id", async (req, res) => {
-  try {
-    let client = new MongoClient(url);
-    await client.connect();
-    let db = client.db('tinder');
-    let collec = db.collection('photos');
-
-    let _id = new ObjectId(req.params.id);
-    let photo = await collec.findOne({ _id });
-
-    if (photo && photo.file_id) {
-      await cloudinary.uploader.destroy(photo.file_id); // Delete from Cloudinary
-    }
-
-    let result = await collec.deleteOne({ _id });
-    res.status(200).send(result);
-  } catch (err) {
-    console.error(err);
-    res.status(500).send({ error: "Delete failed" });
   }
 });
 
